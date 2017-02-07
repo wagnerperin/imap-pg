@@ -1,0 +1,65 @@
+body
+{
+    font-family: 'Open Sans', sans-serif;
+}
+
+.crop {
+    margin-top: 20px;
+    height: 250px;
+    overflow: hidden;
+}
+
+
+.fb-profile img.fb-image-lg{
+    z-index: 0;
+    width: 100%;  
+    margin: -550px 0 0 0;
+}
+
+.fb-image-profile
+{
+    margin: -90px 10px 0px 50px;
+    z-index: 9;
+    width: 20%; 
+}
+
+#timelineNav {
+    border: 1px solid #ffffff;
+    background-color: #ffffff;
+    min-height: 43px;
+    margin-bottom: 10px;
+    position: inherit ;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+#timelineButtons {
+    position: absolute;
+    margin-left: 681px;
+    margin-top: 5px;
+    text-align: right;
+    width: 168px;
+}
+
+#timelineNav ul {
+    list-style: none;
+    margin-left: 210px;
+}
+
+
+#timelineNav li {
+    float: left;
+    height: 19px;
+    
+    font-weight: bold;
+    font-size: 14px;
+    min-width: 82px;
+    text-align: center;
+}
+
+.nav-tabs {border-bottom: 2px solid #DDD;}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover { border-width: 0; }
+.nav-tabs > li > a { border: none; color: #666; }
+.nav-tabs > li.active > a, .nav-tabs > li > a:hover { border: none; color: #4285F4 !important; background: transparent; }
+.nav-tabs > li > a::after { content: ""; background: #4285F4; height: 2px; position: absolute; width: 100%; left: 0px; bottom: -1px; transition: all 250ms ease 0s; transform: scale(0); }
+.nav-tabs > li.active > a::after, .nav-tabs > li:hover > a::after { transform: scale(1); }

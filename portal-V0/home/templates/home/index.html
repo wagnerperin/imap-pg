@@ -1,0 +1,175 @@
+{% extends 'index.html' %} {% load static %}
+{% load staticfiles %}
+    
+{% block content %}
+
+<!-- Header Carousel -->
+    <header id="myCarousel" class="carousel slide">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <div class="fill" style="background-image:url('static/img/slide1.jpg');"></div>
+                <div class="carousel-caption">
+                    <h2>É da Ufes...</h2>
+                    <h4><a href="/about/">Conheça nosso time</a></h4>
+                </div>
+            </div>
+            <div class="item">
+                <div class="fill" style="background-image:url('static/img/slide2.jpg');"></div>
+                <div class="carousel-caption">
+                    <h2>É de graça...</h2>
+                    <h4><a href="/editor/">Crie seu Mapa</a></h4>
+                </div>
+            </div>
+            <div class="item">
+                <div class="fill" style="background-image:url('static/img/slide3.jpg');"></div>
+                <div class="carousel-caption">
+                    <h2>Você pode colaborar...</h2>
+                    <h4><a href="#">Desenvolva conosco</a></h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="icon-prev"></span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="icon-next"></span>
+        </a>
+    </header>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Marketing Icons Section -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Portal do Conhecimento Baseado em Mapas Conceituais
+                </h1>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4><i class="fa fa-fw fa-university"></i> Desenvolvido na UFES</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>O Portal do Conhecimento Baseado em Mapas Conceituais é o principal front-end dos serviços oferecidos pela plataforma CMPaaS. Todos seus desenvolvedores são Professores, Pesquisadores e Estudantes da UFES.</p>
+                        <a href="/about/" class="btn btn-default">Saiba Mais...</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4><i class="fa fa-fw fa-cloud"></i> Fácil e Multiplataforma</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>Todos as ferramentas deste Portal são de fácil utilização e estão disponíveis On-Line. Você pode acessá-las quando e de onde quiser, sem preocupar-se com o dispositivo utilizado. Cadastre-se e aproveite todas suas funções.</p>
+                        <a href="/register/" class="btn btn-default">Cadastre-se</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4><i class="fa fa-fw fa-users"></i> Trabalho Colaborativo</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>Sentiu falta de alguma ferramenta? Deseja que alguem a desenvolva? Ou é programador e deseja desenvolver soluções integradas aos serviços oferecidos pelo CMPaaS? Junte-se ao nosso time e colabore com sua expansão.</p>
+                        <a href="/contact/" class="btn btn-default">Saiba Como</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4><i class="fa fa-fw fa-code-fork"></i> Integrado ao CmapTools</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>Já utiliza o CmapTools? Gostaria de aproveitar as funções do CMPaaS em seus mapas já criados? Importe seus mapas do CmapTools para o Portal do Conhecimento e aproveite das facilidades oferecidas pelo CMPaaS.</p>
+                        <a href="/services/" class="btn btn-default">Saiba Mais...</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Portfolio Section -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Principais Serviços</h2>
+            </div>
+            <div class="col-md-4 col-sm-6 hoverEfect">
+                <div class="caption">
+                        <h4><strong>Edição de Mapas Conceituais<strong></h4>
+                </div>
+                <a href="/editor/">
+                    <img class="img-responsive img-portfolio img-hover" src="/static/img/mapEditor.jpg" alt="Editor de Mapas">
+                </a>
+                
+            </div>
+            
+        </div>
+        <!-- /.row -->
+
+        <!-- Features Section -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Novidades do Nosso Editor de Mapas</h2>
+            </div>
+            <div class="col-md-6">
+                <p>Nosso Editor de Mapas Conceituais permite:</p>
+                <ul>
+                    <li><strong>Criar novoas Mapas Conceituais</strong>
+                    </li>
+                    <li><strong>Salvar seus Mapas na Nuvem</strong>
+                    </li>
+                    <li><strong>Criar novas Versões de um mesmo Mapa Conceitual</strong>
+                    </li>
+                    <li><strong>Consultar e Editar seus Mapas Conceituais utilizando qualquer dispositivo.</strong>
+                    </li>
+                </ul>
+                <p>Estamos trabalhando para melhorar cada vez mais nosso editor de mapas. Sentiu falta de alguma ferramente? <a href="/contact/">Fale conosco</a> e deixe-nos saber do que precisa!</p>
+            </div>
+            <div class="col-md-6">
+                <img class="img-responsive" src="/static/img/responsible.jpg" alt="">
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Call to Action Section -->
+        <div class="well">
+            <div class="row">
+                <div class="col-md-8">
+                    <p>Colabore Conosco! Seja usuário, desenvolvedor ou investidor, contamos com você para aprimorar nosso Portal.</p>
+                </div>
+                <div class="col-md-4">
+                    <a class="btn btn-lg btn-default btn-block" href="#">Clique Aqui e Saiba Mais...</a>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+{% endblock %}
+
+{% block javascript %} 
+    <!-- Script to Activate the Carousel -->
+    <script>
+    $('.carousel').carousel({
+        interval: 5000 //changes the speed
+    })
+    </script>
+{% endblock %}

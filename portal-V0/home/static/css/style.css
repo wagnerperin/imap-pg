@@ -1,0 +1,24 @@
+.carousel-caption {
+    padding-bottom: 60px;
+    background-color: rgba(0,0,0,0.4);
+    width: 100%;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0px;
+}
+
+.carousel-caption a {
+    color: #44D0FF;
+}
+
+.carousel-caption a:after {
+    content: " »"; 
+}
+
+.panel-body p {
+    text-align: justify;
+}
+
+.navbar ul li a{
+    display: none;
+}

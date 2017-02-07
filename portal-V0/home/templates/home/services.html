@@ -1,0 +1,293 @@
+{% extends 'index.html' %} {% load static %}
+{% load staticfiles %}
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Serviços
+                    <small>Disponíveis</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Início</a>
+                    </li>
+                    <li class="active">Serviços</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Image Header -->
+        <div class="row">
+            <div class="col-lg-12">
+                <img class="img-responsive" alt="" src="../static/img/services.jpg">
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Service Panels -->
+        <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Serviços em Destaque</h2>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <span class="fa-stack fa-5x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <h4>Editor de Mapas Conceituais</h4>
+                        <p>Crie, armazene e gerencie seus Mapas Conceituais de onde quiser.</p>
+                        <a class="btn btn-primary" href="/underconstruction/">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <span class="fa-stack fa-5x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-question fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <h4>iMap</h4>
+                        <p>Interaja com seus mapas por meio de perguntas e respostas.</p>
+                        <a class="btn btn-primary" href="/underconstruction/">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <span class="fa-stack fa-5x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <h4>OntoMap</h4>
+                        <p>Construa ontologias razas com nosso editor OWL.</p>
+                        <a class="btn btn-primary" href="/underconstruction/">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <span class="fa-stack fa-5x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <h4>Gerador de Mapas</h4>
+                        <p>Gere mapas conceituais automaticamente a partir de textos.</p>
+                        <a class="btn btn-primary" href="/underconstruction/">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Tabs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Serviços em Desenvolvimento</h2>
+            </div>
+            <div class="col-lg-12">
+
+                <ul class="nav nav-tabs nav-justified" id="myTab">
+                    <li class="active"><a href="#service-one" data-toggle="tab"><i class="fa fa-pencil-square-o"></i> Editor de Mapas Conceituais</a>
+                    </li>
+                    <li><a href="#service-two" data-toggle="tab"><i class="fa fa-question"></i> iMap</a>
+                    </li>
+                    <li><a href="#service-three" data-toggle="tab"><i class="fa fa-pencil"></i> OntoMap</a>
+                    </li>
+                    <li><a href="#service-four" data-toggle="tab"><i class="fa fa-file-text"></i> Gerador de Mapas</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active in" id="service-one">
+                        <h4>O Editor de Mapas Conceituais</h4>
+                        <p>O Editor de Mapas Conceituais é o serviço mais importante desta plataforma, pois é a partir dos mapas nele construídos e armazenados na plataforma que se torna possível explorar os demais serviços oferecidos pela plataforma para manipulação dos mapas e do conhecimento neles presentes.</p>
+                        <h4>Responsáveis</h4>
+                        <div class="row">
+                            <div class="col-md-2 col-sm-4 col-xs-6 hoverEfect">
+                                <img class="img-responsive customer-img" src="../static/img/wagner2.jpg" alt="">
+                                <div class="caption text-center">
+                                    <h4>Wagner Perin<br>
+                                        <small>Responsável Técnico</small>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-xs-6 hoverEfect">
+                                <img class="img-responsive customer-img" src="../static/img/guilherme2.jpg" alt="">
+                                <div class="caption text-center">
+                                    <h4>Guilherme Pinotte<br>
+                                        <small>Assistente Técnico</small>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-xs-6 hoverEfect">
+                                <img class="img-responsive customer-img" src="../static/img/raphael.jpg" alt="">
+                                <div class="caption text-center">
+                                    <h4>Raphael Castro<br>
+                                        <small>Geração de Layouts Automáticos</small>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-xs-6 hoverEfect">
+                                <img class="img-responsive customer-img" src="../static/img/isaque.jpg" alt="">
+                                <div class="caption text-center">
+                                    <h4>Isaque Rocha<br>
+                                        <small>Versionamento de Mapas Conceituais</small>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-xs-6 hoverEfect">
+                                <img class="img-responsive customer-img" src="../static/img/israel.jpg" alt="">
+                                <div class="caption text-center">
+                                    <h4>Israel Henrique<br>
+                                        <small>Sugestão de Novos Conceitos</small>
+                                    </h4>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="service-two">
+                        <h4>iMap</h4>
+                        <p>Cançado de navegar seus mapas conceituais visualmente? Intereja com seus mapas por meio de perguntas e respostas em linguagem natural! Este serviço permite uma interação humanizada entre você e seu mapa conceitual, tornando mais fácil o processo de análise do conhecimento presente no mapa.</p>
+                        <h4>Responsáveis</h4>
+                        <div class="row">
+                            <div class="col-md-2 col-sm-4 col-xs-6 hoverEfect">
+                                <img class="img-responsive customer-img" src="../static/img/wagner2.jpg" alt="">
+                                <div class="caption text-center">
+                                    <h4>Wagner Perin<br>
+                                        <small>Responsável</small>
+                                    </h4>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-2 col-sm-4 col-xs-6 hoverEfect">
+                                <img class="img-responsive customer-img" src="../static/img/marcelo.jpg" alt="">
+                                <div class="caption text-center">
+                                    <h4>Marcelo Ferreira<br>
+                                        <small>Processamento de Linguagem Natural</small>
+                                    </h4>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="service-three">
+                        <h4>OntoMap</h4>
+                        <p>Com o OntoMap você poderá construir por meio de um editor visual suas ontologias razas e produzir o arquivo equivalente em OWL. Ontologia é um modelo de dados que representa um conjunto de conceitos dentro de um domínio e os relacionamentos entre estes e são utilizadas para realizar inferência sobre os objetos do domínio. São utilizadas em inteligência artificial, web semântica, engenharia de software e arquitetura da informação.</p>
+                        <h4>Responsável</h4>
+                        <div class="row">
+                            <div class="col-md-2 col-sm-4 col-xs-6 hoverEfect">
+                                <img class="img-responsive customer-img" src="../static/img/guilherme2.jpg" alt="">
+                                <div class="caption text-center">
+                                    <h4>Guilherme Pinotte<br>
+                                        <small>Responsável</small>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="service-four">
+                        <h4>Gerador de Mapas</h4>
+                        <p>Gosta de produzir mapas conceituais a partir da leitura de texto? Você pode facilitar este processo utilizando o serviço de geração automática de mapas conceituais a partir de textos. Com ele você pode obter um mapa gerado automáticamente e pessoalizar seu mapa com suas posteriores intervenções.</p>
+                        <h4>Responsável</h4>
+                        <div class="row">
+                            <div class="col-md-2 col-sm-4 col-xs-6 hoverEfect">
+                                <img class="img-responsive customer-img" src="../static/img/camila2.jpg" alt="">
+                                <div class="caption text-center">
+                                    <h4>Camila Zacche<br>
+                                        <small>Responsável</small>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Service List -->
+        <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Em Breve...</h2>
+            </div>
+            <div class="col-md-4">
+                <div class="media hoverEfect">
+                    <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-code-fork fa-stack-1x fa-inverse"></i>
+                        </span> 
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">Integração com CmapTools</h4>
+                        <p>Serviço que permite importação/exportação promovendo integração entre o CMPaaS e o CmapTools.</p>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-4">
+                <div class="media hoverEfect">
+                    <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-anchor fa-stack-1x fa-inverse"></i>
+                        </span> 
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">Fusão de Mapas Conceituais</h4>
+                        <p>Serviço que realiza a Fusão entre diferentes Mapas Conceituais.</p>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-4">
+                <div class="media hoverEfect">
+                    <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                        </span> 
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">Serviço de Validação de Mapas</h4>
+                        <p>Serviço que valida a estrutura sintática dos mapas evitando erros comuns.</p>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

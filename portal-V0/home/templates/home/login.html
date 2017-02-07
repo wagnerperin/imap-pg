@@ -1,0 +1,95 @@
+{% extends 'index.html' %} {% load static %}
+{% load staticfiles %}
+{% block css %}
+    <link href="/static/css/regstyle.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+ <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Cadastro de Usuários</h1>
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a>
+                    </li>
+                    <li class="active">Login</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Contact Form -->
+        <!-- In order to set the email address and subject line for the contact form go to the bin/contact_me.php file. -->
+        <div class="row">
+            <div class="col-md-8">
+                <h3 id="title">Autenticação de Usuário</h3>
+                <form name="sentMessage" id="registerForm" novalidate action = "javascript:void(0);">
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <label>Usuário</label>
+                            <input type="text" class="form-control" id="loginusername" required data-validation-required-message="Por favor, informe seu Primeiro Nome.">
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <label>Senha:</label>
+                            <input type="password" class="form-control" id="loginpassword" required data-validation-required-message="Por favor, informe seu Sobrenome.">
+                        </div>
+                    </div>
+                    
+                    <!-- For success/fail messages -->
+                    <button class="btn btn-primary" onclick="login();">Login</button>
+                    
+                </form>
+                <p id="result"></p>
+            </div>
+            <div class="col-md-4">
+                <h3>Fale Conosco</h3>
+                <p>
+                    UFES - Campus Universitário de Goiabeiras<br>
+                    CT 7 - Departamento de Informática<br>
+                    Laboratório de Informática na Educação<br>
+                    Av. Fernando Ferrari, 514, 29075-910 - Vitória/ES, Brasil<br>
+                </p>
+                <p><i class="fa fa-phone"></i> 
+                    <abbr title="Phone">Tel</abbr>: +55 (27) 4009 - 2061</p>
+                <p><i class="fa fa-envelope-o"></i> 
+                    <abbr title="Email">Email</abbr>: <a href="mailto:cmpaas@gmail.com">cmpaas@gmail.com</a>
+                </p>
+                <p><i class="fa fa-clock-o"></i> 
+                    <abbr title="Hours">Horários</abbr>: Segunda - Sexta: 8:00 às 17:00</p>
+                <p>
+                    Curta nossas páginas...
+                </p>
+                <ul class="list-unstyled list-inline list-social-icons">
+                    <li>
+                        <a href="https://www.facebook.com/cmpaas/"><i class="fa fa-facebook-square fa-2x"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-linkedin-square fa-2x"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-twitter-square fa-2x"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-google-plus-square fa-2x"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="/static/js/login.js"></script>
+{% endblock %}
