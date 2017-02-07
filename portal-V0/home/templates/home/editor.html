@@ -62,18 +62,13 @@
                 </div>
               </span>
                 <div id="myDiagram" class="editor"></div>
-            </div>
-
-            <!-- Blog Sidebar Widgets Column -->
-	   <div class="col-md-4">
-
-
+            
                 <div class="well">
                     <form role="form">
                         <h3 class="text-center">Dados do Mapa</h2>
                         <div class="row">
                             <div class="col-xs-12 col-md-12 form-group">
-                                <input class="form-control" id="question" name="question" placeholder="Questão de Investigação" type="text" required autofocus />
+                                <input class="form-control" id="question" name="question" placeholder="Questão de Investigação" type="text" />
                             </div>
                         </div>
                         <textarea class="form-control" id="description" name="description" placeholder="Descrição do Mapa" rows="5"></textarea>
@@ -120,50 +115,39 @@
             <!-- Teste -->
             <div class="col-md-4">
 
-
                 <div class="well">
-                    <form role="form">
-                        <h3 class="text-center">Dados do Mapa</h2>
+
+		      	<h3 class="terminal-header">Terminal Prolog</h2>
+			<div class="terminal" id="terminal" name="terminal">
+
+O Partido dos Trabalhadores (PT) é um partido político brasileiro. Fundado em 1980, integra um dos maiores[17][18] e mais importantes movimentos [19][20] de esquerda da América Latina. No início de 2015, o partido contava com 1,59 milhão de filiados, sendo o segundo maior partido político do Brasil, depois do Partido do Movimento Democrático Brasileiro (PMDB), com 2,35 milhões de filiados.[8] Na legislatura atual (2015-2019), o PT tem a segunda maior bancada na Câmara dos Deputados.
+
+Os ex-presidentes do Brasil Luiz Inácio Lula da Silva e Dilma Rousseff são amplamente reconhecidos como seus membros mais notórios.[21] Seus símbolos são a bandeira vermelha com uma estrela branca ao centro, a estrela vermelha de cinco pontas, com a sigla PT inscrita ao centro e o hino[22] do Partido dos Trabalhadores.
+
+O PT foi o partido preferido de cerca de um quarto do eleitorado brasileiro em dezembro de 2009.[23] No entanto, em 2015, a porcentagem de eleitores que declaram preferência ao PT oscilou entre 9% e 12%, enquanto 38% apontaram a legenda como àquela de que menos gostam (índice de rejeição ao partido).[24][25]. Em 2016, o PT é rejeitado por cerca de 32% do eleitorado paulistano e a preferência pelo partido é pequena. [26]
+
+O PT possui, como os demais partidos políticos no Brasil, uma fundação de apoio. Denominada Fundação Perseu Abramo, foi instituída pelo Diretório Nacional em 1996 e tem por missão realizar debates, editar publicações, promover cursos de formação política e preservar o patrimônio histórico do partido - tarefa pela qual é responsável o Centro Sérgio Buarque de Holanda. A FPA substituiu uma fundação de apoio partidário anteriormente existente no PT, a Fundação Wilson Pinheiro, criada em 1981 e extinta em 1990. Em 12 de maio de 2016, o PT teve uma presidente afastada por 180 dias.
+
+			</div>	
+			<br />
+
                         <div class="row">
                             <div class="col-xs-12 col-md-12 form-group">
-                                <input class="form-control" id="question" name="question" placeholder="Questão de Investigação" type="text" required autofocus />
+                                <input class="form-control" id="query" name="query" placeholder="Query" type="text" />
                             </div>
                         </div>
-                        <textarea class="form-control" id="description" name="description" placeholder="Descrição do Mapa" rows="5"></textarea>
-                        <br />
+                        
 
                         <div class="row">
                             <div class="col-xs-12 col-md-12 form-group">
-                                <button type="button" class="btn btn-primary btn-block" id="btNewMap" onclick="newMap();">Novo Mapa Conceitual</button>
-                                <button type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#demo">Opções de Armazenamento</button>
+                                <button type="button" class="btn btn-primary btn-block" id="btNewMap" onclick="runQuery();">Run!</button>
                             </div>
-                            <div id="demo" class="collapse">
-                            <div class="col-xs-12 col-md-12 form-group">
-                                <button type="button" class="btn btn-success btn-block" id="btNewVersion" onclick="saveMap();" disabled>Salvar Mapa</button>
-                                <button type="button" class="btn btn-primary btn-block" id="btUpdateMap" onclick="updateMap();" disabled>Salvar Alterações</button>
-                                <button type="button" class="btn btn-warning btn-block" id="btRemoveVersion" onclick="removeVersion();" disabled>Excluir Versão</button>
-                                <button type="button" class="btn btn-danger btn-block" id="btRemoveMap" onclick="removeMap();" disabled>Excluir Mapa</button>
 
-                            </div>
-                            </div>
                             <p id="information" style="display: none;">
                         </div>
-                        <div class="row">
-                            <div class="col-xs-12 col-md-12 form-group">
-                                <button type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#demo2">Opções para CMapTools</button>
-                            </div>
-                            <div id="demo2" class="collapse">
-                            <div class="col-xs-12 col-md-12 form-group">
-                                <p>Importar arquivo CXL</p>
-                                <input class="form-control btn-block" id="cmapFile" name="cmapFile" placeholder="Selecione o Arquivo" type="file"/> <br />
-                                <button type="button" class="btn btn-warning btn-block" id="btExportToCMap" onclick="exportToCMap();">Exportar</button>
-                            </div>
-                            </div>
-                            <p id="information" style="display: none;">
-                        </div>
-
+                        
                         </p>
-                    </form>
+
                 </div>
 
             </div>
