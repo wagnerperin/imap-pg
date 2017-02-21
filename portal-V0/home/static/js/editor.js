@@ -226,6 +226,62 @@ function editTitle() {
     document.getElementById('editLink').onclick = function(){ editConclusion(); } ;
 }
 
+function runQuery(){
+
+	var query = document.getElementById('query').value;
+	var terminal = document.getElementById("terminal");
+
+
+	terminal.innerHTML =  terminal.innerHTML + "<br>" + query;
+	terminal.scrollTop = terminal.scrollHeight;
+
+	new Pengine({ server: "http://localhost:3050/pengine",
+		ask: query,
+		chunk: 1000,
+		application: "swish",
+		onsuccess: function(result) {
+		  for(var i=0; i<result.data.length; i++) {
+		    var b = result.data[i];
+		    terminal.innerHTML =  terminal.innerHTML + "<br>" + b.X+" "+b.Y;
+		  }
+		  if ( result.more )
+                    result.pengine.next();
+	        }
+	      });
+		
+
+	//post e get
+
+}
+
+
+
+function post(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+	
+
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+         }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
 function saveMap(){
         var sd_mapTitle = document.getElementById('mapTitle').value;
         var sd_mapQuestion = document.getElementById('question').value;

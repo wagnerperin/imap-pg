@@ -17,8 +17,18 @@
 }
 
 .terminal {
-    height: 250px; /* or any value */
-    overflow-y: auto;
+	height: 250px; /* or any value */
+	overflow-y: auto;
+}
+
+.terminal div{
+	vertical-align: bottom;
+}
+
+.terminal span {
+   position: absolute;
+   bottom: 0;
+   right: 0;
 }
 
 .terminal-header {
