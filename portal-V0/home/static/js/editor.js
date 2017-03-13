@@ -226,14 +226,19 @@ function editTitle() {
     document.getElementById('editLink').onclick = function(){ editConclusion(); } ;
 }
 
+function displayOnTerminal(string){
+
+	var terminal = document.getElementById("terminal");
+
+	terminal.innerHTML =  terminal.innerHTML + "<br>" + string;
+	terminal.scrollTop = terminal.scrollHeight;
+
+}
+
 function runQuery(){
 
 	var query = document.getElementById('query').value;
-	var terminal = document.getElementById("terminal");
-
-
-	terminal.innerHTML =  terminal.innerHTML + "<br>" + query;
-	terminal.scrollTop = terminal.scrollHeight;
+	displayOnTerminal(query);
 
 	new Pengine({ server: "http://localhost:3050/pengine",
 		ask: query,
@@ -249,38 +254,53 @@ function runQuery(){
 	        }
 	      });
 		
-
 	//post e get
-
 }
 
+function post(url, values) {
+    values = values || {};
 
-
-function post(path, params, method) {
-    method = method || "post"; // Set method to post by default if not specified.
-
-    // The rest of this code assumes you are not using a library.
-    // It can be made less wordy if you use one.
-	
-
-    var form = document.createElement("form");
-    form.setAttribute("method", method);
-    form.setAttribute("action", path);
-
-    for(var key in params) {
-        if(params.hasOwnProperty(key)) {
-            var hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", key);
-            hiddenField.setAttribute("value", params[key]);
-
-            form.appendChild(hiddenField);
-         }
+    var form = document.createElement("form", {action: url,
+                                      method: "POST",
+                                      style: "display: none"});
+    for (var property in values) {
+        if (values.hasOwnProperty(property)) {
+            var value = values[property];
+            if (value instanceof Array) {
+                for (var i = 0, l = value.length; i < l; i++) {
+                    form.appendChild(document.createElement("input", {type: "hidden",
+                                                             name: property,
+                                                             value: value[i]}));
+                }
+            }
+            else {
+                form.appendChild(document.createElement("input", {type: "hidden",
+                                                         name: property,
+                                                         value: value}));
+            }
+        }
     }
-
     document.body.appendChild(form);
     form.submit();
+    //document.body.removeChild(form);
 }
+
+
+function saveSwish(){
+
+	var sd_mapTitle = document.getElementById('mapTitle').value;
+        var sd_mapQuestion = document.getElementById('question').value;
+        var sd_mapDescription = document.getElementById('description').value;
+	var sd_mapId = localStorage.getItem("mapId");
+        var sd_mapContent = myDiagram.model.toJson();
+        var sd_mapAuthor;
+
+	sendInfo = {
+        }
+}
+
+
+
 
 function saveMap(){
         var sd_mapTitle = document.getElementById('mapTitle').value;
@@ -291,8 +311,7 @@ function saveMap(){
             sd_mapAuthor =localStorage.getItem("cmpaasid");
         }else{
             sd_mapAuthor = 1;
-        }
-
+	}
 
         var sendInfo = {
             title: sd_mapTitle,
@@ -300,8 +319,11 @@ function saveMap(){
             description: sd_mapDescription,
             author: sd_mapAuthor
         };
-    $.when(
-        $.ajax({
+	sendInfo2 =  { "data": "testjs", "type": "pl", "meta": {"public": "true","name": "testjseditor"}};
+
+/*
+	
+	$.ajax({
             type: "POST",
             url: "http://platform.cmpaas.inf.ufes.br:8000/api/maps/",
             dataType: "json",
@@ -318,6 +340,25 @@ function saveMap(){
         }).fail(function(response){
 
         })
+
+	
+*/
+	console.log("savemap");
+    $.when(
+	$.ajax({
+		type: "POST",
+       		url : "http://127.0.0.1:3050/" , // or whatever
+        	dataType : "json",
+		accept: "application/json",
+           	contentType: "application/json; charset=UTF-8", // This is the money shot
+        	success : function (response) {
+            		console.log(response);
+        	},
+		data: JSON.stringify(sendInfo2)
+    		}).fail(function(response){
+			console.log(response);
+		})
+
     ).then(function(){
         var sd_mapId = localStorage.getItem("mapId");
         var sd_mapContent = myDiagram.model.toJson();
