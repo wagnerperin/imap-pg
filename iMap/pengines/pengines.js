@@ -127,6 +127,19 @@ function Pengine(options) {
 	   }
 	 });
 
+   $.ajax(this.options.server + '/create',
+	 { contentType: "application/json; charset=utf-8",
+	   dataType: "json",
+	   data: JSON.stringify(createOptions),
+	   type: "OPTIONS",
+	   success: function(obj) {
+	     http_response_code(201);
+	   },
+	   error: function(jqXHR, textStatus, errorThrown) {
+	     that.error(jqXHR, textStatus, errorThrown);
+	   }
+	 });
+
 }/*end of Pengine()*/
 
 

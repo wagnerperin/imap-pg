@@ -240,7 +240,7 @@ function runQuery(){
 	var query = document.getElementById('query').value;
 	displayOnTerminal(query);
 
-	new Pengine({ server: "http://localhost:3050/pengine",
+	/*new Pengine({ server: "http://localhost:3050/pengine",
 		ask: query,
 		chunk: 1000,
 		application: "swish",
@@ -252,7 +252,9 @@ function runQuery(){
 		  if ( result.more )
                     result.pengine.next();
 	        }
-	      });
+	      });*/
+
+	runSwish();
 		
 	//post e get
 }
@@ -286,17 +288,46 @@ function post(url, values) {
 }
 
 
-function saveSwish(){
+function runSwish(){
 
-	var sd_mapTitle = document.getElementById('mapTitle').value;
-        var sd_mapQuestion = document.getElementById('question').value;
-        var sd_mapDescription = document.getElementById('description').value;
-	var sd_mapId = localStorage.getItem("mapId");
-        var sd_mapContent = myDiagram.model.toJson();
-        var sd_mapAuthor;
+	sendInfo2 =  {"src_text":"%% Demo coming from http://clwww.essex.ac.uk/course/LG519/2-facts/index_18.html\n%%\n%% Please load this file into SWI-Prolog\n%%\n%% Sam's likes and dislikes in food\n%%\n%% Considering the following will give some practice\n%% in thinking about backtracking.\n%%\n%% You can also run this demo online at\n%% http://swish.swi-prolog.org/?code=https://github.com/SWI-Prolog/swipl-devel/raw/master/demo/likes.pl&q=likes(sam,Food).\n\n/** <examples>\n?- likes(sam,dahl).\n?- likes(sam,chop_suey).\n?- likes(sam,pizza).\n?- likes(sam,chips).\n?- likes(sam,curry).\n*/\n\nlikes(sam,Food) :-\n    indian(Food),\n    mild(Food).\nlikes(sam,Food) :-\n    chinese(Food).\nlikes(sam,Food) :-\n    italian(Food).\nlikes(sam,chips).\n\nindian(curry).\nindian(dahl).\nindian(tandoori).\nindian(kurma).\n\nmild(dahl).\nmild(tandoori).\nmild(kurma).\n\nchinese(chow_mein).\nchinese(chop_suey).\nchinese(sweet_and_sour).\n\nitalian(pizza).\nitalian(spaghetti).\n","format":"json-html","application":"swish","destroy":false}
 
-	sendInfo = {
-        }
+	var uuid = 0;
+
+	$.when(
+		$.ajax({
+			type: "POST",
+	       		url : "http://localhost:3050/pengine/create" , // or whatever
+			dataType : "json",
+			accept: "application/json",
+		   	contentType: "application/json; charset=UTF-8", 
+			success : function (response) {
+		    		console.log(response);
+				uuid = response["id"];
+			},
+			data: JSON.stringify(sendInfo2)
+	    		}).fail(function(response){
+				console.log(response);
+			})
+
+	    	).then(function(){
+
+			$.ajax({
+			    type: "GET",
+			    url: "http://localhost:3050/pengine/send?id=" + uuid + "=ask((%27%24swish%20wrapper%27((%0Alikes(sam%2CFood)%0A)%2C%20Residuals))%2C%20%5Bbreakpoints(%5B%5D)%5D)&format=json-html",
+			    crossDomain: true,
+			    dataType: "json",
+			    accept: "application/json",
+			    contentType: "application/json; charset=UTF-8", // This is the money shot
+			    success: function(data){
+				console.log(data);
+			    },
+			    data: JSON.stringify(sendInfo2)
+			}).fail(function(response){
+			    console.log(response);
+			})
+
+		    });
 }
 
 
@@ -319,10 +350,10 @@ function saveMap(){
             description: sd_mapDescription,
             author: sd_mapAuthor
         };
-	sendInfo2 =  { "data": "testjs", "type": "pl", "meta": {"public": "true","name": "testjseditor"}};
-
-/*
 	
+
+	console.log("savemap");
+    $.when(
 	$.ajax({
             type: "POST",
             url: "http://platform.cmpaas.inf.ufes.br:8000/api/maps/",
@@ -340,24 +371,7 @@ function saveMap(){
         }).fail(function(response){
 
         })
-
 	
-*/
-	console.log("savemap");
-    $.when(
-	$.ajax({
-		type: "POST",
-       		url : "http://127.0.0.1:3050/" , // or whatever
-        	dataType : "json",
-		accept: "application/json",
-           	contentType: "application/json; charset=UTF-8", // This is the money shot
-        	success : function (response) {
-            		console.log(response);
-        	},
-		data: JSON.stringify(sendInfo2)
-    		}).fail(function(response){
-			console.log(response);
-		})
 
     ).then(function(){
         var sd_mapId = localStorage.getItem("mapId");
