@@ -232,68 +232,71 @@ function displayOnTerminal(string){
 
 	terminal.innerHTML =  terminal.innerHTML + "<br>" + string;
 	terminal.scrollTop = terminal.scrollHeight;
-
 }
 
 function runQuery(){
 
 	var query = document.getElementById('query').value;
 	displayOnTerminal(query);
-
-	/*new Pengine({ server: "http://localhost:3050/pengine",
-		ask: query,
+	
+	new Pengine({ server: "http://swish.swi-prolog.org/pengine",
+		ask: "sin_table(X,Y)",
 		chunk: 1000,
 		application: "swish",
 		onsuccess: function(result) {
 		  for(var i=0; i<result.data.length; i++) {
 		    var b = result.data[i];
-		    terminal.innerHTML =  terminal.innerHTML + "<br>" + b.X+" "+b.Y;
+		    displayOnTerminal( b.X + " " + b.Y);
 		  }
 		  if ( result.more )
                     result.pengine.next();
 	        }
-	      });*/
-
-	runSwish();
-		
-	//post e get
+	      });
+	
+	//runSwish(query);
 }
 
-function post(url, values) {
-    values = values || {};
-
-    var form = document.createElement("form", {action: url,
-                                      method: "POST",
-                                      style: "display: none"});
-    for (var property in values) {
-        if (values.hasOwnProperty(property)) {
-            var value = values[property];
-            if (value instanceof Array) {
-                for (var i = 0, l = value.length; i < l; i++) {
-                    form.appendChild(document.createElement("input", {type: "hidden",
-                                                             name: property,
-                                                             value: value[i]}));
-                }
-            }
-            else {
-                form.appendChild(document.createElement("input", {type: "hidden",
-                                                         name: property,
-                                                         value: value}));
-            }
-        }
-    }
-    document.body.appendChild(form);
-    form.submit();
-    //document.body.removeChild(form);
+function strip(html)
+{
+   var tmp = document.createElement("DIV");
+   tmp.innerHTML = html;
+   return tmp.textContent || tmp.innerText || "";
 }
 
 
-function runSwish(){
+function showAnswer(answer){
 
-	sendInfo2 =  {"src_text":"%% Demo coming from http://clwww.essex.ac.uk/course/LG519/2-facts/index_18.html\n%%\n%% Please load this file into SWI-Prolog\n%%\n%% Sam's likes and dislikes in food\n%%\n%% Considering the following will give some practice\n%% in thinking about backtracking.\n%%\n%% You can also run this demo online at\n%% http://swish.swi-prolog.org/?code=https://github.com/SWI-Prolog/swipl-devel/raw/master/demo/likes.pl&q=likes(sam,Food).\n\n/** <examples>\n?- likes(sam,dahl).\n?- likes(sam,chop_suey).\n?- likes(sam,pizza).\n?- likes(sam,chips).\n?- likes(sam,curry).\n*/\n\nlikes(sam,Food) :-\n    indian(Food),\n    mild(Food).\nlikes(sam,Food) :-\n    chinese(Food).\nlikes(sam,Food) :-\n    italian(Food).\nlikes(sam,chips).\n\nindian(curry).\nindian(dahl).\nindian(tandoori).\nindian(kurma).\n\nmild(dahl).\nmild(tandoori).\nmild(kurma).\n\nchinese(chow_mein).\nchinese(chop_suey).\nchinese(sweet_and_sour).\n\nitalian(pizza).\nitalian(spaghetti).\n","format":"json-html","application":"swish","destroy":false};
-	sendInfo = {"ask(('$swish wrapper'((likes(sam,Food)), _residuals)), [breakpoints([])]) ."};
+	var projection = answer["projection"];
+	var data = answer["data"];
 
-	var uuid = 0;
+	if(answer){
+		if(projection.length > 0){
+			var variables = data[0]["variables"];
+			
+
+			for(var i = 0; i < projection.length; i++){
+				var stringVar = "";
+				for(var j = 0; j<variables.length; j++){
+					var v = variables[j];
+					stringVar =  strip(v["value"]) + "," + stringVar;
+				}
+				displayOnTerminal(projection[i] + " = " + stringVar.slice(0,-1));
+			}
+		} else {
+			displayOnTerminal('true');
+		}
+	}else {
+		displayOnTerminal('false');
+	}
+}
+
+function runSwish(query){
+
+	prologCode =  {"src_text":"%% Demo coming from http://clwww.essex.ac.uk/course/LG519/2-facts/index_18.html\n%%\n%% Please load this file into SWI-Prolog\n%%\n%% Sam's likes and dislikes in food\n%%\n%% Considering the following will give some practice\n%% in thinking about backtracking.\n%%\n%% You can also run this demo online at\n%% http://swish.swi-prolog.org/?code=https://github.com/SWI-Prolog/swipl-devel/raw/master/demo/likes.pl&q=likes(sam,Food).\n\n/** <examples>\n?- likes(sam,dahl).\n?- likes(sam,chop_suey).\n?- likes(sam,pizza).\n?- likes(sam,chips).\n?- likes(sam,curry).\n*/\n\nlikes(sam,Food) :-\n    indian(Food),\n    mild(Food).\nlikes(sam,Food) :-\n    chinese(Food).\nlikes(sam,Food) :-\n    italian(Food).\nlikes(sam,chips).\n\nindian(curry).\nindian(dahl).\nindian(tandoori).\nindian(kurma).\n\nmild(dahl).\nmild(tandoori).\nmild(kurma).\n\nchinese(chow_mein).\nchinese(chop_suey).\nchinese(sweet_and_sour).\n\nitalian(pizza).\nitalian(spaghetti).\n","format":"json-html","application":"swish","destroy":false, "chunk":1000};
+
+	var runQuery = "ask(('$swish wrapper'(("+ query.replace('.','') + "), _residuals)), [breakpoints([])]) .";
+
+	var id = 0;
 
 	$.when(
 		$.ajax({
@@ -304,9 +307,9 @@ function runSwish(){
 		   	contentType: "application/json; charset=UTF-8", 
 			success : function (response) {
 		    		console.log(response);
-				uuid = response["id"];
+				id = response["id"];
 			},
-			data: JSON.stringify(sendInfo2)
+			data: JSON.stringify(prologCode)
 	    		}).fail(function(response){
 				console.log(response);
 			})
@@ -315,20 +318,24 @@ function runSwish(){
 
 			$.ajax({
 			    type: "POST",
-			    url: "http://localhost:3050/pengine/send?id=" + uuid + "&format=json-html",
+			    url: "http://localhost:3050/pengine/send?id=" + id + "&format=json-html",
 			    crossDomain: true,
 			    dataType: "json",
 			    accept: "application/json",
-			    contentType: "application/json; charset=UTF-8", // This is the money shot
+			    contentType: "application/json; charset=UTF-8",
+			    
 			    success: function(data){
+					var d = data;
+					showAnswer(data);
 					console.log(data);
 			    },
-			    data: JSON.stringify(sendInfo)
+			    data: runQuery
 			}).fail(function(response){
 			    console.log(response);
 			})
 
 		    });
+
 }
 
 
