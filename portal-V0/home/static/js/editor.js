@@ -237,9 +237,9 @@ function displayOnTerminal(string){
 function runQuery(){
 
 	var query = document.getElementById('query').value;
-	displayOnTerminal(query);
+	displayOnTerminal("P: <br>" + query);
 	
-	new Pengine({ server: "http://swish.swi-prolog.org/pengine",
+	/*new Pengine({ server: "http://swish.swi-prolog.org/pengine",
 		ask: "sin_table(X,Y)",
 		chunk: 1000,
 		application: "swish",
@@ -251,91 +251,73 @@ function runQuery(){
 		  if ( result.more )
                     result.pengine.next();
 	        }
-	      });
+	      });*/
 	
-	//runSwish(query);
+	runSwish(query);
 }
 
-function strip(html)
+function formatAnswer(answerString)
 {
-   var tmp = document.createElement("DIV");
-   tmp.innerHTML = html;
-   return tmp.textContent || tmp.innerText || "";
+	answerString = answerString.replace(/\"/g, "");
+	answerString = answerString.replace(/\[/g, "");
+	answerString = answerString.replace(/\]/g, "");
+	answerString = answerString.replace(/\{/g, "");
+	answerString = answerString.replace(/\}/g, "");
+	answerString = answerString.replace(/\,/g, "<br>");
+	answerString = answerString.replace(/\:/g, " = ");
+	return answerString;
 }
 
 
 function showAnswer(answer){
 
-	var projection = answer["projection"];
+	
 	var data = answer["data"];
+	var event = data["event"];
+	
+	if(event.localeCompare("success") == 0){
+		var dataArray = data["data"];
 
-	if(answer){
-		if(projection.length > 0){
-			var variables = data[0]["variables"];
+		if(!jQuery.isEmptyObject(dataArray[0])){
+		
+			var answerString = formatAnswer(JSON.stringify(dataArray));
 			
-
-			for(var i = 0; i < projection.length; i++){
-				var stringVar = "";
-				for(var j = 0; j<variables.length; j++){
-					var v = variables[j];
-					stringVar =  strip(v["value"]) + "," + stringVar;
-				}
-				displayOnTerminal(projection[i] + " = " + stringVar.slice(0,-1));
-			}
+			displayOnTerminal("R: <br>" + answerString);
 		} else {
-			displayOnTerminal('true');
+			displayOnTerminal("R: <br> true");
 		}
 	}else {
-		displayOnTerminal('false');
+		displayOnTerminal("R: <br> false");
 	}
 }
 
 function runSwish(query){
 
-	prologCode =  {"src_text":"%% Demo coming from http://clwww.essex.ac.uk/course/LG519/2-facts/index_18.html\n%%\n%% Please load this file into SWI-Prolog\n%%\n%% Sam's likes and dislikes in food\n%%\n%% Considering the following will give some practice\n%% in thinking about backtracking.\n%%\n%% You can also run this demo online at\n%% http://swish.swi-prolog.org/?code=https://github.com/SWI-Prolog/swipl-devel/raw/master/demo/likes.pl&q=likes(sam,Food).\n\n/** <examples>\n?- likes(sam,dahl).\n?- likes(sam,chop_suey).\n?- likes(sam,pizza).\n?- likes(sam,chips).\n?- likes(sam,curry).\n*/\n\nlikes(sam,Food) :-\n    indian(Food),\n    mild(Food).\nlikes(sam,Food) :-\n    chinese(Food).\nlikes(sam,Food) :-\n    italian(Food).\nlikes(sam,chips).\n\nindian(curry).\nindian(dahl).\nindian(tandoori).\nindian(kurma).\n\nmild(dahl).\nmild(tandoori).\nmild(kurma).\n\nchinese(chow_mein).\nchinese(chop_suey).\nchinese(sweet_and_sour).\n\nitalian(pizza).\nitalian(spaghetti).\n","format":"json-html","application":"swish","destroy":false, "chunk":1000};
+	var prologCode =  "%% Demo coming from http://clwww.essex.ac.uk/course/LG519/2-facts/index_18.html\n%%\n%% Please load this file into SWI-Prolog\n%%\n%% Sam's likes and dislikes in food\n%%\n%% Considering the following will give some practice\n%% in thinking about backtracking.\n%%\n%% You can also run this demo online at\n%% http://swish.swi-prolog.org/?code=https://github.com/SWI-Prolog/swipl-devel/raw/master/demo/likes.pl&q=likes(sam,Food).\n\n/** <examples>\n?- likes(sam,dahl).\n?- likes(sam,chop_suey).\n?- likes(sam,pizza).\n?- likes(sam,chips).\n?- likes(sam,curry).\n*/\n\nlikes(sam,Food) :-\n    indian(Food),\n    mild(Food).\nlikes(sam,Food) :-\n    chinese(Food).\nlikes(sam,Food) :-\n    italian(Food).\nlikes(sam,chips).\n\nindian(curry).\nindian(dahl).\nindian(tandoori).\nindian(kurma).\n\nmild(dahl).\nmild(tandoori).\nmild(kurma).\n\nchinese(chow_mein).\nchinese(chop_suey).\nchinese(sweet_and_sour).\n\nitalian(pizza).\nitalian(spaghetti).\n";
 
-	var runQuery = "ask(('$swish wrapper'(("+ query.replace('.','') + "), _residuals)), [breakpoints([])]) .";
-
-	var id = 0;
-
+	var sendJson = { "src_text": prologCode,
+			 "format":"json",
+			 "application":"swish",
+			 "ask": query,
+			 "chunk": 10000 //TODO definir uma variavel para o tamanho
+			};
 	$.when(
 		$.ajax({
 			type: "POST",
-	       		url : "http://localhost:3050/pengine/create" , // or whatever
+	       		url : "http://localhost:3050/pengine/create" ,
 			dataType : "json",
 			accept: "application/json",
 		   	contentType: "application/json; charset=UTF-8", 
 			success : function (response) {
 		    		console.log(response);
-				id = response["id"];
+				showAnswer(response["answer"]);
 			},
-			data: JSON.stringify(prologCode)
+			data: JSON.stringify(sendJson)
 	    		}).fail(function(response){
 				console.log(response);
 			})
 
-	    	).then(function(){
-
-			$.ajax({
-			    type: "POST",
-			    url: "http://localhost:3050/pengine/send?id=" + id + "&format=json-html",
-			    crossDomain: true,
-			    dataType: "json",
-			    accept: "application/json",
-			    contentType: "application/json; charset=UTF-8",
-			    
-			    success: function(data){
-					var d = data;
-					showAnswer(data);
-					console.log(data);
-			    },
-			    data: runQuery
-			}).fail(function(response){
-			    console.log(response);
-			})
-
-		    });
-
+	    	);
 }
 
 
