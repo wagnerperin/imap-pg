@@ -291,9 +291,39 @@ function showAnswer(answer){
 	}
 }
 
+function fromJSONToProlog(){
+
+	console.log(myDiagram.model.toJSON());
+	var mapJSON = JSON.parse(myDiagram.model.toJSON());
+
+	var nodeData = mapJSON["nodeDataArray"];
+	var linkData = mapJSON["linkDataArray"];
+
+	var nodes = new Object();
+
+	for(var i = 0; i < nodeData.length; i++){
+		var node = nodeData[i];
+		nodes[node["key"]] = node["text"];
+	}
+
+	var prologString = '';
+
+	for(var i = 0; i < linkData.length; i++){
+
+		var link = linkData[i];
+		prologString = prologString + "rel(" + nodes[link["from"]] + ',' + link["text"] + ',' + nodes[link["to"]] + ").\n";
+	}
+
+	return prologString;
+
+}
+
 function runSwish(query){
 
-	var prologCode =  "%% Demo coming from http://clwww.essex.ac.uk/course/LG519/2-facts/index_18.html\n%%\n%% Please load this file into SWI-Prolog\n%%\n%% Sam's likes and dislikes in food\n%%\n%% Considering the following will give some practice\n%% in thinking about backtracking.\n%%\n%% You can also run this demo online at\n%% http://swish.swi-prolog.org/?code=https://github.com/SWI-Prolog/swipl-devel/raw/master/demo/likes.pl&q=likes(sam,Food).\n\n/** <examples>\n?- likes(sam,dahl).\n?- likes(sam,chop_suey).\n?- likes(sam,pizza).\n?- likes(sam,chips).\n?- likes(sam,curry).\n*/\n\nlikes(sam,Food) :-\n    indian(Food),\n    mild(Food).\nlikes(sam,Food) :-\n    chinese(Food).\nlikes(sam,Food) :-\n    italian(Food).\nlikes(sam,chips).\n\nindian(curry).\nindian(dahl).\nindian(tandoori).\nindian(kurma).\n\nmild(dahl).\nmild(tandoori).\nmild(kurma).\n\nchinese(chow_mein).\nchinese(chop_suey).\nchinese(sweet_and_sour).\n\nitalian(pizza).\nitalian(spaghetti).\n";
+/*
+	var prologCode =  "%% Demo coming from http://clwww.essex.ac.uk/course/LG519/2-facts/index_18.html\n%%\n%% Please load this file into SWI-Prolog\n%%\n%% Sam's likes and dislikes in food\n%%\n%% Considering the following will give some practice\n%% in thinking about backtracking.\n%%\n%% You can also run this demo online at\n%% http://swish.swi-prolog.org/?code=https://github.com/SWI-Prolog/swipl-devel/raw/master/demo/likes.pl&q=likes(sam,Food).\n\n/** <examples>\n?- likes(sam,dahl).\n?- likes(sam,chop_suey).\n?- likes(sam,pizza).\n?- likes(sam,chips).\n?- likes(sam,curry).\n*/ /*\n\nlikes(sam,Food) :-\n    indian(Food),\n    mild(Food).\nlikes(sam,Food) :-\n    chinese(Food).\nlikes(sam,Food) :-\n    italian(Food).\nlikes(sam,chips).\n\nindian(curry).\nindian(dahl).\nindian(tandoori).\nindian(kurma).\n\nmild(dahl).\nmild(tandoori).\nmild(kurma).\n\nchinese(chow_mein).\nchinese(chop_suey).\nchinese(sweet_and_sour).\n\nitalian(pizza).\nitalian(spaghetti).\n";*/
+
+	var prologCode = fromJSONToProlog();
 
 	var sendJson = { "src_text": prologCode,
 			 "format":"json",
@@ -309,7 +339,6 @@ function runSwish(query){
 			accept: "application/json",
 		   	contentType: "application/json; charset=UTF-8", 
 			success : function (response) {
-		    		console.log(response);
 				showAnswer(response["answer"]);
 			},
 			data: JSON.stringify(sendJson)
