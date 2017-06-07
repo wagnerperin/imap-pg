@@ -56,8 +56,6 @@ $("myDiagram").mouseleave(function() {
 */
 CMPAAS = {};
 
-
-
 prologRules = `
 							primeiraOrdemDireta(ConceitoA, ConceitoB) :-
 								rel(ConceitoA,_,ConceitoB).
@@ -215,7 +213,6 @@ prologRules = `
 								nelem(N,I1,R,X).
 
 	`;
-
 
 CMPAAS.editor = function() {
   var public = {};
@@ -432,6 +429,7 @@ function formatAnswer(answerString)
 
 function showAnswer(answer){
 
+	
 	var data = answer["data"];
 	var event = data["event"];
 	
@@ -478,6 +476,38 @@ function fromJSONToProlog(){
 
 }
 
+function runSwish(queries){
+
+	var prologCode = fromJSONToProlog() + prologRules;
+
+	for (var key in queries) {
+		  if (queries.hasOwnProperty(key)) {
+			var sendJson = { "src_text": prologCode,
+				 "format":"json",
+			 	 "application":"swish",
+			 	 "ask": queries[key],
+				 "chunk": 10000 //TODO definir uma variavel para o tamanho
+				};
+			$.when(
+				$.ajax({
+					type: "POST",
+		       			url : "http://localhost:3050/pengine/create" ,
+					dataType : "json",
+					accept: "application/json",
+			   		contentType: "application/json; charset=UTF-8", 
+					success : function (response) {
+						console.log(response);
+						//showAnswer(response["answer"]);
+					},
+					data: JSON.stringify(sendJson)
+		    			}).fail(function(response){
+						console.log(response);
+					})
+	
+	    		);
+	    	}
+	}
+}
 
 function runPNL(query){
 
@@ -493,7 +523,6 @@ function runPNL(query){
 			
 			success : function (response) {
 				runSwish(response);
-				return response;
 			},
 			data: JSON.stringify(sendAskJson)
 	    		}).fail(function(response){
@@ -502,42 +531,6 @@ function runPNL(query){
 
 	    	);
 }
-
-function runSwish(questions){
-
-	var prologCode = fromJSONToProlog() + prologRules;
-
-	for (var key in questions) {
-		  if (questions.hasOwnProperty(key)) {
-			  	var sendJson = { "src_text": prologCode,
-				 "format":"json",
-				 "application":"swish",
-				 "ask": query,
-				 "chunk": 10000 //TODO definir uma variavel para o tamanho
-				};
-				
-				$.when(
-					$.ajax({
-						type: "POST",
-				       		url : "http://swish.swi-prolog.org/pengine/create" ,
-						dataType : "json",
-						accept: "application/json",
-					   	contentType: "application/json; charset=UTF-8", 
-						success : function (response) {
-							showAnswer(response["answer"]);
-						},
-						data: JSON.stringify(sendJson)
-				    		}).fail(function(response){
-							console.log(response);
-						})
-			
-	    				);
-		  }
-	}
-}
-
-
-
 
 function saveMap(){
         var sd_mapTitle = document.getElementById('mapTitle').value;
