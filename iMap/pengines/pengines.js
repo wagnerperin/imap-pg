@@ -1,4 +1,4 @@
-/*  Copyright (c) 2014, Torbjörn Lager
+/*  Copyright (c) 2014
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without

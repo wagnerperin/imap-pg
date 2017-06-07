@@ -56,6 +56,167 @@ $("myDiagram").mouseleave(function() {
 */
 CMPAAS = {};
 
+
+
+prologRules = `
+							primeiraOrdemDireta(ConceitoA, ConceitoB) :-
+								rel(ConceitoA,_,ConceitoB).
+							primeiraOrdemInversa(ConceitoA, ConceitoB) :-
+								primeiraOrdemDireta(ConceitoB, ConceitoA).
+							
+							existeRelacaoDireta(ConceitoA, ConceitoB) :-
+								primeiraOrdemDireta(ConceitoA, ConceitoB); primeiraOrdemInversa(ConceitoA, ConceitoB).
+							
+							todoDestino(Conceito, _, Saida) :-
+								primeiraOrdemDireta(Conceito, Saida).
+							todoDestino(Conceito, V, Saida) :-
+								primeiraOrdemDireta(Conceito, X),
+								\+ member(X, V),
+								todoDestino(X, [X|V], Saida).
+							
+							todaOrigem(Saida, _, Conceito) :-
+								primeiraOrdemDireta(Saida, Conceito).
+							todaOrigem(Saida, V, Conceito) :-
+								primeiraOrdemDireta(X, Conceito),
+								\+ member(X, V),
+								todaOrigem(Saida,[X|V], X).
+							
+							existeRelacao(ConceitoA, ConceitoB) :-
+								todaOrigem(ConceitoA, [ConceitoA], ConceitoB); todaOrigem(ConceitoB, [ConceitoB], ConceitoA).
+							
+							quaisRelacoes(Saida, Conceito) :-
+								rel(Conceito, Saida, _),
+								rel(_, Saida, Conceito).
+							
+							quaisRelacoes(Saida, ConceitoA, ConceitoB) :-
+								rel(ConceitoA, Saida, ConceitoB),
+								rel(ConceitoB, Saida, ConceitoA).
+												
+								
+							listaRelacao(LR):-
+								findall(R,rel(_,R,_),LR).
+							
+							buscaRelacao(R):-	
+								listaRelacao(LR),
+								member(R,LR).
+							
+							nTotalRelacao(R):-
+								listaRelacao(LR),
+								comprimento(R,LR).
+								
+							nConceitoRelacao(N,R):-
+								findall(ConceitoA,rel(ConceitoA,R,_),LRA),
+								findall(ConceitoB,rel(_,R,ConceitoB),LRB),
+								concatena(LRA,LRB,LR2),
+								write(LR2),
+								comprimento(N,LR2).
+							
+							numeroRelacaoConceito(N,C):- 
+								findall(Relacao,rel(C,Relacao,_),LC1),
+								write(LC1),
+								comprimento(N,LC1).
+								
+								
+							nRelacaoConceitos(N,CA,CB):-
+								findall(R1,rel(CA,R1,CB),Laux1),
+								findall(R1,rel(CB,R1,CA),Laux2),
+								concatena(Laux1,Laux2,Laux3),
+								write(Laux3),
+								comprimento(N,Laux3).
+								
+							listaConceitoA(LCA):-
+								findall(ConceitoA,rel(ConceitoA,_,_),LCA).
+								
+							listaConceitoB(LCB):-
+								findall(ConceitoB,rel(_,_,ConceitoB),LCB).
+								
+							listaConceito(LC):-
+								listaConceitoA(LCA),
+								listaConceitoB(LCB),
+								concatena(LCA,LCB,LC2),
+								list_to_set(LC2,LC).
+							
+							listaConceitoConcatenada(LC2):-	
+								listaConceitoA(LCA),
+								listaConceitoB(LCB),
+								concatena(LCA,LCB,LC2).
+							
+							listaConceitoAux(LCaux):-
+								findall(C,listaConceitoConcatenada(C),LCaux).
+									
+								
+							buscaConceito(C):-	
+								listaConceito(LC),
+								member(C,LC).
+							
+							nTotalConceito(C):-
+								listaConceito(LC),
+								comprimento(C,LC).	
+							
+							nConceito(C,C1):-	
+								listaConceitoConcatenada(LC2),
+								comprimento(C,LC2).
+							
+							nRelacaoCadaConceito(N,C):-
+								findall(R1,rel(C,R1,_),Laux1),
+								findall(R2,rel(_,R2,C),Laux2),
+								concatena(Laux1,Laux2,Laux3),
+								write(Laux3),
+								comprimento(N,Laux3).	
+								
+							nRelacaoEntradaConceito(N,C):-
+								findall(R1,rel(C,R1,_),Laux1),
+								write(Laux1),
+								comprimento(N,Laux1).
+								
+							listaPreposicao(LP1):-
+								findall((ConceitoA,R,ConceitoB),rel(ConceitoA,R,ConceitoB),LP1).		
+							
+							nPreposicao(N):-
+								findall(R,rel(_,R,_),LP),
+								comprimento(N,LP).
+								
+							nivelRelacao(N,R):-
+								listaRelacao(LR),
+								nelem(N,LR,R).
+							
+							nivelRelacaoFinal(N,R):-
+								listaRelacao(LR),
+								nelem(M,LR,R),
+								nTotalRelacao(K),
+								N is (K - M).
+								
+							nivelConceito(N,C):-
+								listaConceitoConcatenada(LC2),
+								nelem(N,LC2,C).	
+							
+							nivelConceitoFinal(X,C):-
+									listaConceitoConcatenada(LC2),
+									nelem(M,LC2,C),
+									listaConceito(LC),
+									nTotalConceito(K),
+									X is (K - M).
+									
+									
+							pertence(X,[X,_]).
+							pertence(X,[_,Y]):- pertence(X,Y).	
+									
+							comprimento(0,[]).
+							comprimento(N,[_|R]):- 
+								comprimento(N1,R),
+								N is 1 + N1.
+								
+							concatena([],L,L).
+							concatena([X|L1],L2,[X|L3]):- concatena(L1,L2,L3).
+								
+							nelem(N,L,X):-nelem(N,1,L,X).
+							nelem(N,N,[X|_],X):-!.
+							nelem(N,I,[_|R],X):- I1 is I+1,
+								nelem(N,I1,R,X).
+
+	`;
+
+
 CMPAAS.editor = function() {
   var public = {};
 
@@ -253,7 +414,7 @@ function runQuery(){
 	        }
 	      });*/
 	
-	runSwish(query);
+	runPNL(query);
 }
 
 function formatAnswer(answerString)
@@ -271,7 +432,6 @@ function formatAnswer(answerString)
 
 function showAnswer(answer){
 
-	
 	var data = answer["data"];
 	var event = data["event"];
 	
@@ -318,35 +478,62 @@ function fromJSONToProlog(){
 
 }
 
-function runSwish(query){
 
-/*
-	var prologCode =  "%% Demo coming from http://clwww.essex.ac.uk/course/LG519/2-facts/index_18.html\n%%\n%% Please load this file into SWI-Prolog\n%%\n%% Sam's likes and dislikes in food\n%%\n%% Considering the following will give some practice\n%% in thinking about backtracking.\n%%\n%% You can also run this demo online at\n%% http://swish.swi-prolog.org/?code=https://github.com/SWI-Prolog/swipl-devel/raw/master/demo/likes.pl&q=likes(sam,Food).\n\n/** <examples>\n?- likes(sam,dahl).\n?- likes(sam,chop_suey).\n?- likes(sam,pizza).\n?- likes(sam,chips).\n?- likes(sam,curry).\n*/ /*\n\nlikes(sam,Food) :-\n    indian(Food),\n    mild(Food).\nlikes(sam,Food) :-\n    chinese(Food).\nlikes(sam,Food) :-\n    italian(Food).\nlikes(sam,chips).\n\nindian(curry).\nindian(dahl).\nindian(tandoori).\nindian(kurma).\n\nmild(dahl).\nmild(tandoori).\nmild(kurma).\n\nchinese(chow_mein).\nchinese(chop_suey).\nchinese(sweet_and_sour).\n\nitalian(pizza).\nitalian(spaghetti).\n";*/
+function runPNL(query){
 
-	var prologCode = fromJSONToProlog();
-
-	var sendJson = { "src_text": prologCode,
-			 "format":"json",
-			 "application":"swish",
-			 "ask": query,
-			 "chunk": 10000 //TODO definir uma variavel para o tamanho
+	var sendAskJson = { "pergunta": query,
 			};
 	$.when(
 		$.ajax({
 			type: "POST",
-	       		url : "http://localhost:3050/pengine/create" ,
+	       		url : "http://localhost:9000/tradutorws" ,
 			dataType : "json",
 			accept: "application/json",
 		   	contentType: "application/json; charset=UTF-8", 
+			
 			success : function (response) {
-				showAnswer(response["answer"]);
+				runSwish(response);
+				return response;
 			},
-			data: JSON.stringify(sendJson)
+			data: JSON.stringify(sendAskJson)
 	    		}).fail(function(response){
 				console.log(response);
 			})
 
 	    	);
+}
+
+function runSwish(questions){
+
+	var prologCode = fromJSONToProlog() + prologRules;
+
+	for (var key in questions) {
+		  if (questions.hasOwnProperty(key)) {
+			  	var sendJson = { "src_text": prologCode,
+				 "format":"json",
+				 "application":"swish",
+				 "ask": query,
+				 "chunk": 10000 //TODO definir uma variavel para o tamanho
+				};
+				
+				$.when(
+					$.ajax({
+						type: "POST",
+				       		url : "http://swish.swi-prolog.org/pengine/create" ,
+						dataType : "json",
+						accept: "application/json",
+					   	contentType: "application/json; charset=UTF-8", 
+						success : function (response) {
+							showAnswer(response["answer"]);
+						},
+						data: JSON.stringify(sendJson)
+				    		}).fail(function(response){
+							console.log(response);
+						})
+			
+	    				);
+		  }
+	}
 }
 
 
