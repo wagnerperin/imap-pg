@@ -118,14 +118,13 @@ public class Pergunta extends Model {
 
 	// filtro de tipo de pergunta
 	public List<PerguntaPl> filtroTipoPergunta() {
-		if (this.chave.equals("existir") || this.chave.equals("estar")
-				|| this.chave.equals("ser"))
-			return PerguntaPl.filtraTipo("logico"); // logico
+		if (this.chave.equals("existir") || this.chave.equals("estar") || this.chave.equals("ser"))
+			return PerguntaPl.filtraTipo("logico");   // logico
 		if (this.chave.equals("quanto") )
 			return PerguntaPl.filtraTipo("numerico");// numerico
-		if (this.chave.equals("conceito")
-				|| this.tpResposta.descricao.equals("conceito"))
+		if (this.chave.equals("conceito") || this.tpResposta.descricao.equals("conceito")){
 			return PerguntaPl.filtraTipo("conceito");// conceito
+		}
 		if (this.chave.equals("relação")
 				|| this.tpResposta.descricao.equals("relação"))
 			return PerguntaPl.filtraTipo("relação");// relação

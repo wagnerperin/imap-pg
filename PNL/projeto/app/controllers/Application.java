@@ -2,7 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import play.mvc.*;
 import models.Conceito;
 import models.Pergunta;
 import models.PerguntaPl;
@@ -36,10 +36,13 @@ public class Application extends Controller {
 		}
 		RequestVISL pln = new RequestVISL(per.getPergunta());
 		ArrayList<String> resp = pln.getRequestResponse();
+		for(String r:resp)
+			System.out.println(r);
 		per.trataPergunta(resp);
-
+		
 		// primeito filtro
 		List<PerguntaPl> pls = per.filtroTipoPergunta();
+
 
 		// segundo filtro
 		List<PerguntaPl> auxpls = per.filtroQuantParametros(pls);
@@ -47,6 +50,7 @@ public class Application extends Controller {
 			pls = auxpls;
 		else if (auxpls.size() < pls.size() && auxpls.size() > 0)
 			pls = auxpls;
+
 		// terceiro filtro
 		auxpls = per.filtroPalavraChave(pls);
 		if (auxpls.size() < pls.size() && auxpls.size() > 0)
@@ -55,16 +59,19 @@ public class Application extends Controller {
 			per.perguntapls.add(pl);
 
 		}
-		per.saveTipoResposta();
-		per.save();
-		for(PerguntaPl ppl: per.perguntapls)
-			pergpl.add(ppl.getPergunta(per));	
+		//per.saveTipoResposta();
+		//per.save();
+		for(PerguntaPl ppl: per.perguntapls){
+			pergpl.add(ppl.getPergunta(per));
+
+		}
 		return pergpl;
 	}
 
 	public static Result tradutorWeb() {
 		Form<String> form = formqs.bindFromRequest();
 		String pergunta = form.data().get("question");
+		System.out.println(pergunta);
 		Pergunta p = new Pergunta(pergunta.toLowerCase());
 		List<String> pls = tradutor(p);
 		return ok(aswer.render(pls));
@@ -87,12 +94,13 @@ public class Application extends Controller {
 					result.put("perguntapl" + i, pl);
 					i++;
 				}
-				 response().setHeader("Access-Control-Allow-Origin", "*");
 
+				response().setHeader("Access-Control-Allow-Origin", "*");
 				return ok(result);
 			}
 		}
 	}
+	
 	
 	public static Result checkPreFlight() {
     		response().setHeader("Access-Control-Allow-Origin", "*");       // Need to add the correct domain in here!!
@@ -101,5 +109,5 @@ public class Application extends Controller {
     		response().setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");         // Ensure this header is also allowed!  
    		 return ok();
 	}
-	
+
 }

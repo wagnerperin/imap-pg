@@ -69,14 +69,14 @@ prologRules = `
 								primeiraOrdemDireta(Conceito, Saida).
 							todoDestino(Conceito, V, Saida) :-
 								primeiraOrdemDireta(Conceito, X),
-								\+ member(X, V),
+								\\+ member(X, V),
 								todoDestino(X, [X|V], Saida).
 							
 							todaOrigem(Saida, _, Conceito) :-
 								primeiraOrdemDireta(Saida, Conceito).
 							todaOrigem(Saida, V, Conceito) :-
 								primeiraOrdemDireta(X, Conceito),
-								\+ member(X, V),
+								\\+ member(X, V),
 								todaOrigem(Saida,[X|V], X).
 							
 							existeRelacao(ConceitoA, ConceitoB) :-
@@ -150,10 +150,7 @@ prologRules = `
 							nTotalConceito(C):-
 								listaConceito(LC),
 								comprimento(C,LC).	
-							
-							nConceito(C,C1):-	
-								listaConceitoConcatenada(LC2),
-								comprimento(C,LC2).
+			
 							
 							nRelacaoCadaConceito(N,C):-
 								findall(R1,rel(C,R1,_),Laux1),
@@ -187,15 +184,7 @@ prologRules = `
 							nivelConceito(N,C):-
 								listaConceitoConcatenada(LC2),
 								nelem(N,LC2,C).	
-							
-							nivelConceitoFinal(X,C):-
-									listaConceitoConcatenada(LC2),
-									nelem(M,LC2,C),
-									listaConceito(LC),
-									nTotalConceito(K),
-									X is (K - M).
-									
-									
+																
 							pertence(X,[X,_]).
 							pertence(X,[_,Y]):- pertence(X,Y).	
 									
@@ -396,21 +385,8 @@ function runQuery(){
 
 	var query = document.getElementById('query').value;
 	displayOnTerminal("P: <br>" + query);
-	
-	/*new Pengine({ server: "http://swish.swi-prolog.org/pengine",
-		ask: "sin_table(X,Y)",
-		chunk: 1000,
-		application: "swish",
-		onsuccess: function(result) {
-		  for(var i=0; i<result.data.length; i++) {
-		    var b = result.data[i];
-		    displayOnTerminal( b.X + " " + b.Y);
-		  }
-		  if ( result.more )
-                    result.pengine.next();
-	        }
-	      });*/
-	
+
+		
 	runPNL(query);
 }
 
@@ -429,23 +405,28 @@ function formatAnswer(answerString)
 
 function showAnswer(answer){
 
+	var res = answer["event"];
 	
-	var data = answer["data"];
-	var event = data["event"];
-	
-	if(event.localeCompare("success") == 0){
-		var dataArray = data["data"];
-
-		if(!jQuery.isEmptyObject(dataArray[0])){
-		
-			var answerString = formatAnswer(JSON.stringify(dataArray));
-			
-			displayOnTerminal("R: <br>" + answerString);
-		} else {
-			displayOnTerminal("R: <br> true");
-		}
+	if(res.localeCompare("error") == 0){
+			displayOnTerminal("R:  <br> error");
 	}else {
-		displayOnTerminal("R: <br> false");
+		var data = answer["data"];
+		var event = data["event"];
+		
+		if(event.localeCompare("success") == 0){
+			var dataArray = data["data"];
+
+			if(!jQuery.isEmptyObject(dataArray[0])){
+		
+				var answerString = formatAnswer(JSON.stringify(dataArray));
+			
+				displayOnTerminal("R:  <br>" + answerString);
+			} else {
+				displayOnTerminal("R:  <br>  true");
+			}
+		}else {
+			displayOnTerminal("R:  <br> false");
+		}
 	}
 }
 
@@ -480,26 +461,31 @@ function runSwish(queries){
 
 	var prologCode = fromJSONToProlog() + prologRules;
 
+	
 	for (var key in queries) {
 		  if (queries.hasOwnProperty(key)) {
+		  
 			var sendJson = { "src_text": prologCode,
 				 "format":"json",
 			 	 "application":"swish",
 			 	 "ask": queries[key],
 				 "chunk": 10000 //TODO definir uma variavel para o tamanho
 				};
+			console.log(queries[key]);
 			$.when(
 				$.ajax({
 					type: "POST",
 		       			url : "http://localhost:3050/pengine/create" ,
 					dataType : "json",
 					accept: "application/json",
-			   		contentType: "application/json; charset=UTF-8", 
+			   		contentType: "application/json; charset=UTF-8",
+			   		data: JSON.stringify(sendJson), 
+					async: false,
 					success : function (response) {
-						console.log(response);
-						//showAnswer(response["answer"]);
-					},
-					data: JSON.stringify(sendJson)
+						showAnswer( response["answer"]);
+						console.log(response)
+
+					}
 		    			}).fail(function(response){
 						console.log(response);
 					})
@@ -522,6 +508,7 @@ function runPNL(query){
 		   	contentType: "application/json; charset=UTF-8", 
 			
 			success : function (response) {
+				console.log(response);
 				runSwish(response);
 			},
 			data: JSON.stringify(sendAskJson)
