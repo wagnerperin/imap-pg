@@ -392,16 +392,38 @@ function runQuery(){
 
 function formatAnswer(answerString)
 {
-	answerString = answerString.replace(/\"/g, "");
-	answerString = answerString.replace(/\[/g, "");
-	answerString = answerString.replace(/\]/g, "");
-	answerString = answerString.replace(/\{/g, "");
-	answerString = answerString.replace(/\}/g, "");
-	answerString = answerString.replace(/\,/g, "<br>");
-	answerString = answerString.replace(/\:/g, " = ");
-	return answerString;
+	
+	var aux = "";
+	for(var as in answerString){
+		for(var key in answerString[as]){
+
+			var as_aux = answerString[as];
+			var res = as_aux[key];
+			
+			if(!jQuery.isEmptyObject(res["args"])){
+				console.log(res);
+				var res_args = res["args"];
+				var a = "";
+				for(var i = 0; i < res_args.length-1; i++){
+					a = a + res_args[i] + res["functor"];
+				}
+				a = a + res_args[res_args.length - 1] +" <br>";
+				aux = aux + key + " = " + a;				
+			}
+			else{
+				aux = aux + key + " = " + res + "<br>";
+			}
+			 
+		}
+	}
+	return aux;
 }
 
+function formatHTMLAnswer(answerString)
+{
+	answerString = answerString.replace(/<\/?span[^>]*>/g,"");
+	return answerString;
+}
 
 function showAnswer(answer){
 
@@ -410,22 +432,44 @@ function showAnswer(answer){
 	if(res.localeCompare("error") == 0){
 			displayOnTerminal("R:  <br> error");
 	}else {
-		var data = answer["data"];
-		var event = data["event"];
-		
-		if(event.localeCompare("success") == 0){
-			var dataArray = data["data"];
 
-			if(!jQuery.isEmptyObject(dataArray[0])){
+		if(res.localeCompare("output") == 0){
 		
-				var answerString = formatAnswer(JSON.stringify(dataArray));
-			
-				displayOnTerminal("R:  <br>" + answerString);
-			} else {
-				displayOnTerminal("R:  <br>  true");
+			displayOnTerminal("Escrita:  <br>" + formatHTMLAnswer(answer["data"]));
+			$.when(
+				$.ajax({
+					type: "POST",
+		       			url : "http://localhost:3050/pengine/pull_response?id="+answer["id"]+"&format=json-html",
+					dataType : "json",
+					accept: "application/json",
+			   		contentType: "application/json; charset=UTF-8", 
+					async: false,
+					success : function (response) {
+						console.log(response);
+						showAnswer( response);
+					}
+		    			}).fail(function(response){
+						console.log(response);
+					})
+	
+	    		);
+
+		}else{
+			var data = answer["data"];
+			var event = data["event"];
+				
+			if(event.localeCompare("success") == 0){
+				var dataArray = data["data"];
+				if(!jQuery.isEmptyObject(dataArray[0])){
+
+					var answerString = formatAnswer(dataArray);
+					displayOnTerminal("R:  <br>" + answerString);
+				} else {
+					displayOnTerminal("R:  <br>  true");
+				}
+			}else {
+				displayOnTerminal("R:  <br> false");
 			}
-		}else {
-			displayOnTerminal("R:  <br> false");
 		}
 	}
 }
@@ -482,9 +526,8 @@ function runSwish(queries){
 			   		data: JSON.stringify(sendJson), 
 					async: false,
 					success : function (response) {
+						console.log(response);
 						showAnswer( response["answer"]);
-						console.log(response)
-
 					}
 		    			}).fail(function(response){
 						console.log(response);
