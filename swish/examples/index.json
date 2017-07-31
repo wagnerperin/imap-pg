@@ -1,0 +1,8 @@
+// list of examples, represented as a JSON list
+
+[ { "file":"examples.swinb",	     "title":"Example programs" },
+  { "file":"prolog_tutorials.swinb", "title":"Prolog tutorials" },
+  { "file":"swish_tutorials.swinb",  "title":"SWISH tutorials" },
+  "--",
+  { "file":"stats.swinb",	     "title":"Usage statistics" }
+]
