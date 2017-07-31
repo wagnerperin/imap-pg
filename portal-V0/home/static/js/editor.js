@@ -83,11 +83,11 @@ prologRules = `
 								todaOrigem(ConceitoA, [ConceitoA], ConceitoB); todaOrigem(ConceitoB, [ConceitoB], ConceitoA).
 							
 							quaisRelacoes(Saida, Conceito) :-
-								rel(Conceito, Saida, _),
+								rel(Conceito, Saida, _);
 								rel(_, Saida, Conceito).
 							
 							quaisRelacoes(Saida, ConceitoA, ConceitoB) :-
-								rel(ConceitoA, Saida, ConceitoB),
+								rel(ConceitoA, Saida, ConceitoB);
 								rel(ConceitoB, Saida, ConceitoA).
 												
 								
@@ -160,7 +160,7 @@ prologRules = `
 								comprimento(N,Laux3).	
 								
 							nRelacaoEntradaConceito(N,C):-
-								findall(R1,rel(C,R1,_),Laux1),
+								findall(R1,rel(_,R1,C),Laux1),
 								write(Laux1),
 								comprimento(N,Laux1).
 								
